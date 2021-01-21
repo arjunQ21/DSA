@@ -5,24 +5,24 @@ using namespace std ;
 #define SIZE 4
 
 class CircularQueue{
-	int front, rear, arr[ SIZE ] ;
+	int insertAt, deleteFrom, arr[ SIZE ] ;
 	public:
 		CircularQueue(){
-			front = rear = 0 ;
+			insertAt = deleteFrom = 0 ;
 		}
 		int isFull(){
-			return (front == (rear + 1) % SIZE) ;
+			return ((insertAt - deleteFrom ) == SIZE) ;
 		}
 		int isEmpty(){
-			return ( front == rear ) ;
+			return ( insertAt == deleteFrom ) ;
 		}
 		void insert(int num){
 			if(isFull()){
 				cout << "\nQueue Overflow. Cant insert more items." ;
 			}else{
-				arr[rear % SIZE] = num ;
+				arr[insertAt % SIZE] = num ;
 				cout << "\n Inserted " << num << " to queue." ;
-				rear ++ ;
+				insertAt ++ ;
 			}
 			display() ;
 		}
@@ -30,35 +30,30 @@ class CircularQueue{
 			if(isEmpty()){
 				cout << "\nQueue Underflow. Cant remove when there are no items." ;
 			}else{
-				front ++ ;
-				cout << "\nRemoved " << arr[front - 1] << " from queue." ;
-				front = front % SIZE ;
-				if(front == rear){
-					front = rear = 0 ;
-				}
+				cout << "\nRemoved " << arr[deleteFrom++ % SIZE ] << " from queue." ;
 			}
 			display() ;
 		}
 		void display(){
-			cout << endl << "Queue: " << endl 
-			<< "Front: " << front << ", Rear: " << rear << ", Full: " << (isFull()? "Yes": "No" )<< ", Empty: " << (isEmpty()?"Yes" : "No" )<<endl ;
+			cout << endl << endl << "Queue Status: " << endl << endl 
+			<< "insertAt: " << insertAt << ", deleteFrom: " << deleteFrom << ", Full: " << (isFull()? "Yes": "No" )<< ", Empty: " << (isEmpty()?"Yes" : "No" )<<endl ;
 			int i ;
-			for( i = front ; i < rear ; i++){
+			for( i = deleteFrom ; i < insertAt ; i++){
 				cout << "\n[" 
-//				<< i<<", " 
 				<< i % SIZE << "] => " << arr[ i % SIZE ] ;
-//				if(front == i % SIZE ) break ;
 			}
 		}
 };
 
 main(){
 	CircularQueue queue;
-	cout << "\n Demo of queue operations for queue of size " << SIZE ;
+	cout << "\n Demo of queue operations for queue of size " << SIZE << endl << endl;
 	char choice ;
 	int input ;
 	
 	do{
+//		system("CLS") ;
+//		queue.display();
 		cout << "\n\n\nEnter your choice" ;
 		cout << "\nPress: \n" 
 				<< "a => " << "add item to queue" <<endl 
